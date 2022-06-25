@@ -1,5 +1,10 @@
 import colors from 'colors';
-import { inquirerMenu, readInput, pause } from './helpers/inquirer.js';
+import {
+  inquirerMenu,
+  readInput,
+  pause,
+  listTasksDelete,
+} from './helpers/inquirer.js';
 import { saveInFile, readFromFile } from './helpers/handleFile.js';
 import { Task } from './models/task.js';
 import { Tasks } from './models/tasks.js';
@@ -25,11 +30,22 @@ const main = async () => {
         tasks.createTask(desc);
         break;
       case '2':
-        console.log(tasks.listArr);
+        tasks.showList();
         break;
       case '3':
+        tasks.listPendingOrCompleteTasks(true);
         break;
-
+      case '4':
+        tasks.listPendingOrCompleteTasks(false);
+        break;
+      case '5':
+        break;
+      case '6':
+        const id = await listTasksDelete(tasks.listArr);
+        tasks.deleteTask(id);
+        break;
+      case '0':
+        break;
       default:
         break;
     }

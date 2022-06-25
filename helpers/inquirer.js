@@ -30,7 +30,7 @@ const questions = [
       },
       {
         value: '6',
-        name: `${'6.'.green}. Borrar tarea`,
+        name: `${'6.'.green} Borrar tarea`,
       },
       {
         value: '0',
@@ -82,4 +82,38 @@ const pause = async () => {
   await inquirer.prompt(inputUser);
 };
 
-export { inquirerMenu, readInput, pause };
+const listTasksDelete = async (tasks = []) => {
+  const choices = tasks.map((task, index) => {
+    const idx = `${index + 1}`.green;
+
+    return {
+      value: task.id,
+      name: `${idx}. ${task.desc}`,
+    };
+  });
+
+  const inputUser = [
+    {
+      type: 'list',
+      name: 'id',
+      message: `Selecciona la tarea a eliminar:`,
+      choices,
+    },
+  ];
+
+  const { id } = await inquirer.prompt(inputUser);
+  return id;
+};
+
+
+// const confirmation = ( message = '' ) {
+//   const question = [
+//     {
+//       type: 'confirm',
+//       name: 'decision',
+
+//     }
+//   ]
+// }
+
+export { inquirerMenu, listTasksDelete, readInput, pause };
