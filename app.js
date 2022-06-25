@@ -4,6 +4,8 @@ import {
   readInput,
   pause,
   listTasksDelete,
+  confirmation,
+  showCheckListTasks,
 } from './helpers/inquirer.js';
 import { saveInFile, readFromFile } from './helpers/handleFile.js';
 import { Task } from './models/task.js';
@@ -39,10 +41,18 @@ const main = async () => {
         tasks.listPendingOrCompleteTasks(false);
         break;
       case '5':
+        const ids = await showCheckListTasks(tasks.listArr);
+        tasks.toggleCompleted(ids);
         break;
       case '6':
         const id = await listTasksDelete(tasks.listArr);
-        tasks.deleteTask(id);
+        if (id !== '0') {
+          const decision = await confirmation('¿Estás seguro?');
+          if (decision) {
+            tasks.deleteTask(id);
+            console.log('Tarea borrada');
+          }
+        }
         break;
       case '0':
         break;
